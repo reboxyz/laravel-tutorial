@@ -42,4 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // One-to-many relationship between User (parent) and Comment (children)
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    // Many-to-many relationship between Post and User using 'post_user' pivot table
+    public function posts() {
+        return $this->belongsToMany(Post::class, 'post_user', 'user_id', 'post_id');
+    }
 }
