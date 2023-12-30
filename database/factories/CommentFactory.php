@@ -17,7 +17,9 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'body' => [],   // empty
+            'user_id' => 1, // Note! Hard-coded for the time being temporarily
+            'post_id' => 1, // Note! Hard-coded for the time being temporarily
         ];
     }
 }
