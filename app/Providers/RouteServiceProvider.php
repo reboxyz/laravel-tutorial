@@ -36,5 +36,12 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+        /*
+        // Note! Define explicit binding here. In this example, 'user' is the keyword to bind
+        Route::bind('user', function($value) {
+            return 'sample value to return for explicit binding';
+        });
+        */
     }
 }
