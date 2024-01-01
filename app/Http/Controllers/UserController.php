@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,9 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::query()->get();
-        return new JsonResponse([
-            'data' => $users
-        ]);
+        return UserResource::collection($users);
     }
 
     /**
@@ -24,15 +23,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $post = User::create([
+        $user = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => $request['password'],
         ]);
 
-        return new JsonResponse([
-            'data'=> $post
-        ]);
+        return new UserResource($user);
     }
 
     /**
@@ -40,9 +37,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new JsonResponse([
-            'data' => $user,  
-        ]);
+        return new UserResource($user);
     }
 
     /**
@@ -65,9 +60,7 @@ class UserController extends Controller
             ], 400); // Bad request
         }
 
-        return new JsonResponse([
-            'data'=> $user
-        ]);
+        return new UserResource($user);
     }
 
     /**

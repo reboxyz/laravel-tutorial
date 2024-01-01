@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,10 +16,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $posts = Comment::query()->get();
-        return new JsonResponse([
-            'data' => $posts
-        ]);
+        $comments = Comment::query()->get();
+        return CommentResource::collection($comments);
     }
 
     /**
@@ -30,9 +29,7 @@ class CommentController extends Controller
             'body' => $request['body'],
         ]);
 
-        return new JsonResponse([
-            'data'=> $comment
-        ]);
+        return new CommentResource($comment);
     }
 
     /**
@@ -40,9 +37,7 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        return new JsonResponse([
-            'data'=> $comment
-        ]);
+        return new CommentResource($comment);
     }
 
     /**
@@ -63,9 +58,7 @@ class CommentController extends Controller
             ], 400); // Bad request
         }
 
-        return new JsonResponse([
-            'data'=> $comment
-        ]);
+        return new CommentResource($comment);
     }
 
     /**
