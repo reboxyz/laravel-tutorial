@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,8 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        $users = User::query()->get();
         return new JsonResponse([
-            'data' => 'index',  
+            'data' => $users
         ]);
     }
 
@@ -24,8 +24,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $post = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => $request['password'],
+        ]);
+
         return new JsonResponse([
-            'data' => 'store',  
+            'data'=> $post
         ]);
     }
 
@@ -44,8 +50,23 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $updated = $user->update([
+            'name' => $request->name ?? $user->name,
+            'email' => $request->email ?? $user->email,
+            'password' => $request->password ?? $user->password,
+        ]);
+
+        if (!$updated)
+        {
+            return new JsonResponse([
+                'errors' => [
+                    'Failed to update model'
+                ]
+            ], 400); // Bad request
+        }
+
         return new JsonResponse([
-            'data' => 'update',  
+            'data'=> $user
         ]);
     }
 
@@ -54,8 +75,19 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $deleted = $user->forceDelete();
+
+        if (!$deleted)
+        {
+            return new JsonResponse([
+                'errors' => [
+                    'Failed to delete model'
+                ]
+            ], 400); // Bad request
+        }
+
         return new JsonResponse([
-            'data' => 'destroy',  
+            'data'=> 'success'
         ]);
     }
 }

@@ -13,6 +13,10 @@ class Comment extends Model
         'body' => 'array'  // Laravel will automatically convert json to array
     ];
 
+    protected $fillable = [
+        'body',
+    ];
+
     // One-to-many relationship between Post (parent) and Comment (children) 
     public function post()
     {

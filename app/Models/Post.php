@@ -13,6 +13,14 @@ class Post extends Model
         'body' => 'array'  // Laravel will automatically convert json to array
     ];
 
+    protected $fillable = [
+        'title', 'body',
+    ];
+
+    protected $appends = [
+        'title_upper_case'
+    ];
+
     // Accessor: title_upper_case (snake format) and naming prefix 'get' and suffix 'Attribute'
     public function getTitleUpperCaseAttribute()
     {
