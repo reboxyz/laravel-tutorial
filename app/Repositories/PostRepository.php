@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 
-class PostRepository
+class PostRepository extends BaseRepository
 {
     public function create(array $attributes)
     {
@@ -23,7 +23,7 @@ class PostRepository
         return $created;
     }
 
-    public function update(Post $post, array $attributes)
+    public function update($post, array $attributes)
     {
         return DB::transaction(function () use ($post, $attributes) {
             $updated = $post->update([
@@ -43,7 +43,7 @@ class PostRepository
         });
     }
 
-    public function foreceDelete(Post $post)
+    public function forceDelete($post)
     {
         return DB::transaction(function () use ($post) {
             $deleted = $post->forceDelete();

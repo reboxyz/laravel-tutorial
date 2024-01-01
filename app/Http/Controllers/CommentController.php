@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use App\Repositories\CommentRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -26,11 +27,9 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, CommentRepository $repository)
     {
-        $comment = Comment::create([
-            'body' => $request['body'],
-        ]);
+        $comment = $repository->create($request->only(['body']));
 
         return new CommentResource($comment);
     }
@@ -46,20 +45,11 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCommentRequest $request, Comment $comment)
+    public function update(Request $request, Comment $comment, CommentRepository $repository)
     {
-        $updated = $comment->update([
-            'body' => $request->body ?? $comment->body,
-        ]);
-
-        if (!$updated)
-        {
-            return new JsonResponse([
-                'errors' => [
-                    'Failed to update model'
-                ]
-            ], 400); // Bad request
-        }
+        $comment = $repository->update($comment, $request->only([
+            'body' 
+        ]));
 
         return new CommentResource($comment);
     }
@@ -67,19 +57,9 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment, CommentRepository $repository)
     {
-        $deleted = $comment->forceDelete();
-
-        if (!$deleted)
-        {
-            return new JsonResponse([
-                'errors' => [
-                    'Failed to delete model'
-                ]
-            ], 400); // Bad request
-        }
-
+        $deleted = $repository->forceDelete($comment);
         return new JsonResponse([
             'data'=> 'success'
         ]);

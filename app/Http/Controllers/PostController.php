@@ -68,7 +68,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post, PostRepository $repository)
     {
-        $deleted = $repository->foreceDelete($post);
+        $deleted = $repository->forceDelete($post);
 
         return new JsonResponse([
             'data'=> 'success'
