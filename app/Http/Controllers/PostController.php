@@ -14,10 +14,13 @@ class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * GET api/posts?page=2&page_size=10
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::query()->get();
+        $pageSize = $request->page_size ?? 20;
+
+        $posts = Post::query()->paginate($pageSize);
 
         return PostResource::collection($posts);
     }

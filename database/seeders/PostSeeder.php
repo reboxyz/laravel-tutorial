@@ -25,9 +25,10 @@ class PostSeeder extends Seeder
 
         $this->truncate("posts");  // Use Trait instead
 
-        $posts = Post::factory(3)
+        $posts = Post::factory(60)
             ->has(Comment::factory(3), 'comments')
-            ->untitled()->create();
+        //    ->untitled()
+            ->create();
     
         // Seed the post_user pivot table
         $posts->each(function (Post $post) {
