@@ -7,6 +7,12 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+
+    // Suppress the report() method of a class
+    protected $dontReport = [
+        //GeneralJsonException::class,
+    ];
+
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
