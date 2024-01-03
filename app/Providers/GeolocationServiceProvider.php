@@ -9,6 +9,9 @@ use Illuminate\Support\ServiceProvider;
 
 class GeolocationServiceProvider extends ServiceProvider
 {
+    // Important Note! Service Provider should be register in the DI Container thru config\app.php's providers array prop
+
+
     /**
      * Register services.
      */
