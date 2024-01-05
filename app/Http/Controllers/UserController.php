@@ -37,7 +37,7 @@ class UserController extends Controller
         $user = $repository->create($request->only([
             "name",
             "email",
-            "password",
+            //"password",
         ]));
 
         return new UserResource($user);
@@ -56,12 +56,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user, UserRepository $repository)
     {
-        $updated = $repository->update($user, $request->only([
-            "name",
-            "email",
-            "password",
+        $user = $repository->update($user, $request->only([
+            'name',
+            'email',
         ]));
-        
+
+        /*
         if (!$updated)
         {
             return new JsonResponse([
@@ -70,6 +70,7 @@ class UserController extends Controller
                 ]
             ], 400); // Bad request
         }
+        */
 
         return new UserResource($user);
     }

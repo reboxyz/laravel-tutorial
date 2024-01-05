@@ -15,6 +15,8 @@ class Comment extends Model
 
     protected $fillable = [
         'body',
+        'user_id',
+        'post_id',
     ];
 
     // One-to-many relationship between Post (parent) and Comment (children) 

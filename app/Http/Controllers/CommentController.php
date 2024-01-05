@@ -29,7 +29,11 @@ class CommentController extends Controller
      */
     public function store(Request $request, CommentRepository $repository)
     {
-        $comment = $repository->create($request->only(['body']));
+        $comment = $repository->create($request->only([
+            'body',
+            'user_id',
+            'post_id',
+        ]));
 
         return new CommentResource($comment);
     }
