@@ -47,8 +47,8 @@ class UserRepository extends BaseRepository
     public function forceDelete($user)
     {
         return DB::transaction(function () use ($user) {
-            $deleted = $user->forceDelete();
-
+            $deleted = $user->forceDelete(); // Return boolean
+            
             /*
             if (! $deleted) {
                 throw new \Exception('Failed to delete model.');
