@@ -81,13 +81,15 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post, PostRepository $repository)
+    public function update(UpdatePostRequest $request, Post $post, PostRepository $repository)
     {
-        $post = $repository->update($post, $request->only([
+        $payload = $request->only([
             'title',
             'body',
             'user_ids'
-        ]));
+        ]);
+
+        $post = $repository->update($post, $payload);
 
         return new PostResource($post);
     }

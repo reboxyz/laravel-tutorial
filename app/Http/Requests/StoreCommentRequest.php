@@ -11,7 +11,7 @@ class StoreCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'body'=> 'string|required',
+            'user_id' => ['required', 'numeric'],               
+            'post_id' => ['required', 'numeric'],               
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'body.required' => 'Please enter a value for body.',
         ];
     }
 }

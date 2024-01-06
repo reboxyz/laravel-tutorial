@@ -11,7 +11,7 @@ class UpdateCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class UpdateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'body'=> 'string|required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'body.required' => 'Please enter a value for body.',
         ];
     }
 }

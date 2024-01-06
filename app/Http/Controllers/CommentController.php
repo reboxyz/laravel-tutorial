@@ -27,7 +27,7 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, CommentRepository $repository)
+    public function store(StoreCommentRequest $request, CommentRepository $repository)
     {
         $comment = $repository->create($request->only([
             'body',
@@ -49,7 +49,7 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment, CommentRepository $repository)
+    public function update(UpdateCommentRequest $request, Comment $comment, CommentRepository $repository)
     {
         $comment = $repository->update($comment, $request->only([
             'body' 
