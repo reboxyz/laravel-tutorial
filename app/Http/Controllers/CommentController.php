@@ -10,11 +10,23 @@ use App\Repositories\CommentRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Comment Management
+ * APIs to manage comments
+*/
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     * * GET api/comments?page=2&page_size=10
+     * Display a listing of comments.
+     *
+     * Gets a list of comments.
+     *
+     * @queryParam page_size int Size per page. Defaults to 20. Example: 20
+     * @queryParam page int Page to view. Example: 1
+     *
+     * @apiResourceCollection App\Http\Resources\PostResource
+     * @apiResourceModel App\Models\Post
+     * @return CommentResource
      */
     public function index(Request $request)
     {
@@ -25,7 +37,14 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created comment in storage.
+     * @bodyParam body string[] required Body of the comment. Example: ["This comment is super beautiful"]
+     * @bodyParam user_id int required The author id of the comment. Example: 1
+     * @bodyParam post_id int required The post id that the comment belongs to. Example: 1
+     * @apiResource App\Http\Resources\CommentResource
+     * @apiResourceModel App\Models\Comment
+     * @param \App\Http\Requests\StoreCommentRequest $request
+     * @return CommentResource
      */
     public function store(StoreCommentRequest $request, CommentRepository $repository)
     {
@@ -39,7 +58,11 @@ class CommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified comment.
+     * @apiResource App\Http\Resources\CommentResource
+     * @apiResourceModel App\Models\Comment
+     * @param \App\Models\Comment $comment
+     * @return CommentResource
      */
     public function show(Comment $comment)
     {
@@ -47,7 +70,15 @@ class CommentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified comment in storage.
+     * @bodyParam body string[] Body of the comment. Example: ["This comment is super beautiful"]
+     * @bodyParam user_id int The author id of the comment. Example: 1
+     * @bodyParam post_id int The post id that the comment belongs to. Example: 1
+     * @apiResource App\Http\Resources\CommentResource
+     * @apiResourceModel App\Models\Comment
+     * @param \App\Http\Requests\UpdateCommentRequest $request
+     * @param \App\Models\Comment $comment
+     * @return CommentResource | JsonResponse
      */
     public function update(UpdateCommentRequest $request, Comment $comment, CommentRepository $repository)
     {
@@ -59,7 +90,12 @@ class CommentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified comment from storage.
+     * @response 200 {
+        "data": "success"
+     * }
+     * @param \App\Models\Comment $comment
+     * @return JsonResponse
      */
     public function destroy(Comment $comment, CommentRepository $repository)
     {

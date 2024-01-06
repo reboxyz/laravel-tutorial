@@ -1,0 +1,300 @@
+name: 'Comment Management'
+description: 'APIs to manage comments'
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/comments
+    metadata:
+      groupName: 'Comment Management'
+      groupDescription: 'APIs to manage comments'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of comments.'
+      description: 'Gets a list of comments.'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page_size:
+        name: page_size
+        description: 'Size per page. Defaults to 20.'
+        required: false
+        example: 20
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      page:
+        name: page
+        description: 'Page to view.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanQueryParameters:
+      page_size: 20
+      page: 1
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":64,"title":"aut","body":[],"created_at":"2024-01-06T23:59:13.000000Z","updated_at":"2024-01-06T23:59:13.000000Z"},{"id":65,"title":"quibusdam","body":[],"created_at":"2024-01-06T23:59:13.000000Z","updated_at":"2024-01-06T23:59:13.000000Z"}]}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/comments/{id}'
+    metadata:
+      groupName: 'Comment Management'
+      groupDescription: 'APIs to manage comments'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display the specified comment.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the comment.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":572,"body":[],"user_id":3,"post_id":41,"created_at":"2024-01-06T23:59:13.000000Z","updated_at":"2024-01-06T23:59:13.000000Z"}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/comments
+    metadata:
+      groupName: 'Comment Management'
+      groupDescription: 'APIs to manage comments'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Store a newly created comment in storage.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      body:
+        name: body
+        description: 'Body of the comment.'
+        required: true
+        example:
+          - 'This comment is super beautiful'
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      user_id:
+        name: user_id
+        description: 'The author id of the comment.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      post_id:
+        name: post_id
+        description: 'The post id that the comment belongs to.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanBodyParameters:
+      body:
+        - 'This comment is super beautiful'
+      user_id: 1
+      post_id: 1
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":572,"body":[],"user_id":5,"post_id":37,"created_at":"2024-01-06T23:59:13.000000Z","updated_at":"2024-01-06T23:59:13.000000Z"}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/comments/{id}'
+    metadata:
+      groupName: 'Comment Management'
+      groupDescription: 'APIs to manage comments'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update the specified comment in storage.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the comment.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      body:
+        name: body
+        description: 'Body of the comment.'
+        required: false
+        example:
+          - 'This comment is super beautiful'
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      user_id:
+        name: user_id
+        description: 'The author id of the comment.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+      post_id:
+        name: post_id
+        description: 'The post id that the comment belongs to.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        custom: []
+    cleanBodyParameters:
+      body:
+        - 'This comment is super beautiful'
+      user_id: 1
+      post_id: 1
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":572,"body":[],"user_id":8,"post_id":3,"created_at":"2024-01-06T23:59:13.000000Z","updated_at":"2024-01-06T23:59:13.000000Z"}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/comments/{id}'
+    metadata:
+      groupName: 'Comment Management'
+      groupDescription: 'APIs to manage comments'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Remove the specified comment from storage.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the comment.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+          "data": "success"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
