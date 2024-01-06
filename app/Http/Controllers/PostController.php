@@ -8,9 +8,11 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Repositories\PostRepository;
+use App\Rules\IntegerArray;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -33,13 +35,36 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request, PostRepository $repository)
+    public function store(
+        //StorePostRequest $request, // Note! This is much cleaner way to validate request
+        Request $request, 
+        PostRepository $repository
+        )
     {   
-        $created = $repository->create($request->only([
+        $payload = $request->only([
             'title',
             'body',
             'user_ids'
-        ]));
+        ]);
+
+        // Note! Using Validator
+        $validator = Validator::validate($payload, [
+            'title' => 'string|required',
+            'body' => ['string', 'required'],
+            'user_ids' => [
+                'array',
+                'required',
+                new IntegerArray()
+            ],
+        ], [
+            'title.string' => 'Title must be a string.',
+            'title.required' => 'Please enter a value for title.',
+            'body.required' => 'Please enter a value for body.'
+        ], [
+           'user_ids' => 'USER IDs' 
+        ]);
+
+        $created = $repository->create($payload);
        
         return new PostResource($created);
     }
