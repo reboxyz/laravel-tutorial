@@ -45,6 +45,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             //'throttle:5,1',    // Note! Set the Rate Limit to 5 requests per minute
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            //'verified',    // Apply EnsureEmailIsVerified in all our 'api' routes
         ],
     ];
 
