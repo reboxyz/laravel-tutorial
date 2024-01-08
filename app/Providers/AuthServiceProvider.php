@@ -25,8 +25,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Setup Custom Email for Mail Verification when User is registering
+        
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
             return new VerifyMail($notifiable, $url);
         });
+        
     }
 }

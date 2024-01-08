@@ -147,7 +147,7 @@ return [
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
-        Features::emailVerification(),  // Note! User Model must implements MustVerifyEmail too
+        //Features::emailVerification(),  // Note! User Model must implements MustVerifyEmail too
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         /* Note! Comment this out if 2fa will be enabled
