@@ -150,13 +150,13 @@ return [
 //        Features::emailVerification(),  // Note! User Model must implements MustVerifyEmail too
         Features::updateProfileInformation(),
         Features::updatePasswords(),
-/*        
+        /* Note! Comment this out if 2fa will be enabled
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => true,
             // 'window' => 0,
         ]),
-*/        
+        */
     ],
 
 ];
