@@ -22,7 +22,7 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body'=> 'string|required',
+            'body'=> 'array|required',
             'user_id' => ['required', 'numeric'],               
             'post_id' => ['required', 'numeric'],               
         ];

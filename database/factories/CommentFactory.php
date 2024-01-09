@@ -23,7 +23,7 @@ class CommentFactory extends Factory
         $userId = FactoryHelpers::getRandomModelId(User::class);
 
         return [
-            'body' => [],   // empty
+            'body' => ['abcde'],   // empty
             'user_id' => $userId, 
             'post_id' => $postId, 
         ];

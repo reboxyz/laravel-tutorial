@@ -24,11 +24,12 @@ class StorePostRequest extends FormRequest
     {
         return [
             'title' => 'string|required',
-            'body' => ['string', 'required'],
+            'body' => ['array', 'required'],
             'user_ids' => [
                 'array',
                 'required',
-                new IntegerArray() // Note! Custom Rule
+                new IntegerArray()
+            
                 /*
                 // closure params: $attribute is field name, $value is the value, $fail is callback function
                 function($attribute, $value, $fail) {

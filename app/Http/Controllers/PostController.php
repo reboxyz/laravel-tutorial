@@ -65,26 +65,24 @@ class PostController extends Controller
             'body',
             'user_ids'
         ]);
-
-        // Note! Using Validator
-        $validator = Validator::validate($payload, [
+        
+        Validator::validate($payload, [
             'title' => 'string|required',
-            'body' => ['string', 'required'],
+            'body' => ['array', 'required'],
             'user_ids' => [
                 'array',
                 'required',
-                new IntegerArray()
-            ],
+                new IntegerArray(),
+            ]
         ], [
-            'title.string' => 'Title must be a string.',
-            'title.required' => 'Please enter a value for title.',
-            'body.required' => 'Please enter a value for body.'
+            'body.required' => "Please enter a value for body.",
+            'title.string' => 'HEYYYY use a string',
         ], [
-           'user_ids' => 'USER IDs' 
+            'user_ids' => 'USERR IDDD'
         ]);
-
+        
         $created = $repository->create($payload);
-       
+
         return new PostResource($created);
     }
 
@@ -112,7 +110,11 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return PostResource | JsonResponse
      */
-    public function update(UpdatePostRequest $request, Post $post, PostRepository $repository)
+    public function update(
+        //UpdatePostRequest $request,
+        Request $request,
+        Post $post,
+        PostRepository $repository)
     {
         $payload = $request->only([
             'title',

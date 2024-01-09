@@ -80,7 +80,11 @@ class CommentController extends Controller
      * @param \App\Models\Comment $comment
      * @return CommentResource | JsonResponse
      */
-    public function update(UpdateCommentRequest $request, Comment $comment, CommentRepository $repository)
+    public function update(
+        //UpdateCommentRequest $request, 
+        Request $request, 
+        Comment $comment, 
+        CommentRepository $repository)
     {
         $comment = $repository->update($comment, $request->only([
             'body' 

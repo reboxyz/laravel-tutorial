@@ -18,7 +18,7 @@ class PostFactory extends Factory
     {
         return [
             'title' => $this->faker->word,
-            'body'=> [], // empty array
+            'body'=> ['abcdef test'], 
         ];
     }
 

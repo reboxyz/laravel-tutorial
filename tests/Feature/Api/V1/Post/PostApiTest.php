@@ -6,6 +6,7 @@ use App\Events\Models\Post\PostCreated;
 use App\Events\Models\Post\PostDeleted;
 use App\Events\Models\Post\PostUpdated;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -14,6 +15,16 @@ use Tests\TestCase;
 class PostApiTest extends TestCase
 {
     use RefreshDatabase;  // Reset DB
+
+    protected $uri = '/api/v1/posts';
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $user = User::factory()->make();
+        $this->actingAs($user);
+    }
+    
 
     public function test_index()
     {
@@ -47,42 +58,37 @@ class PostApiTest extends TestCase
 
     public function test_create()
     {
-        Event::fake(); // Note! This is need to test Events
-
+        Event::fake();
         $dummy = Post::factory()->make();
 
-        $response = $this->json('post','/api/v1/posts', $dummy->toArray());
+        $dummyUser = User::factory()->create();
 
-        Event::assertDispatched(PostCreated::class);
+        $response = $this->json('post', $this->uri, array_merge($dummy->toArray(), ['user_ids' => [$dummyUser->id]]));
 
         $result = $response->assertStatus(201)->json('data');
-
-        // Convert result to an object in which the keys are those defined in the original 'dummy' object
+        Event::assertDispatched(PostCreated::class);
         $result = collect($result)->only(array_keys($dummy->getAttributes()));
-        
-        $result->each(function ($value, $field) use ($dummy) {
-            $this->assertSame(data_get($dummy, $field), $value);
-        });   
+
+        $result->each(function ($value, $field) use($dummy){
+            $this->assertSame(data_get($dummy, $field), $value, 'Fillable is not the same.');
+        });
     }
 
     public function test_update()
     {
-        $dummy = Post::factory()->create(); // To update
-        $dummy2 = Post::factory()->make();  // Data to update
-
-        Event::fake();  // Note! This is need to test Events
-        
+        $dummy = Post::factory()->create();
+        $dummy2 = Post::factory()->make();
+        Event::fake();
         $fillables = collect((new Post())->getFillable());
 
-        $fillables->each(function ($toUpdate) use ($dummy, $dummy2) {
-            $response = $this->json('patch', '/api/v1/posts/' . $dummy->id, [
+        $fillables->each(function ($toUpdate) use($dummy, $dummy2){
+            $response = $this->json('patch', $this->uri . '/' . $dummy->id, [
                 $toUpdate => data_get($dummy2, $toUpdate),
             ]);
 
             $result = $response->assertStatus(200)->json('data');
-            //dump($result);
             Event::assertDispatched(PostUpdated::class);
-            $this->assertSame(data_get($dummy2, $toUpdate), data_get($dummy->refresh(), $toUpdate),'Failed to update model.');            
+            $this->assertSame(data_get($dummy2, $toUpdate), data_get($dummy->refresh(), $toUpdate),'Failed to update model.');
         });
     }
 

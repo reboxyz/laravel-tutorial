@@ -24,7 +24,7 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'title' => 'string|required',
-            'body' => ['string', 'required'],
+            'body' => ['array', 'required'],
             'user_ids' => [
                 'array',
                 'required',
@@ -36,7 +36,7 @@ class UpdatePostRequest extends FormRequest
                     $integerOnly = collect($value)->every(fn ($element) => is_int($element));
                     //dump($integerOnly);
 
-                    if (! $integerOnly) {
+                   if (! $integerOnly) {
                         $fail($attribute . ' can only be integers.');
                     }
                 }
