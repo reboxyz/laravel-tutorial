@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\PlaygroundEvent;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -53,11 +54,18 @@ if (\Illuminate\Support\Facades\App::environment('local')) {
 
     Route::get('/playground', function () { 
 
+        // Broadcast Event for Web Socket
+        event(new PlaygroundEvent());
+        return null;
+
+
         // Signed Route
+        /*
         $url = URL::temporarySignedRoute('share-video', now()->addSeconds(30), [
             'video' => 134
         ]);
         return $url;
+        */
 
         // Internationalization Sample Start
         /*
