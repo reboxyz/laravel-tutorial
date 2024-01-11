@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')
     ->middleware([
-        'auth:sanctum'
+//        'auth:sanctum'  // Note! Temporarily disabled for signed route
     ])
     ->group(function () {
         

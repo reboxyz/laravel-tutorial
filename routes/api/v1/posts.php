@@ -23,5 +23,6 @@ Route::middleware([
 
         Route::post('/posts/{post}/share', [\App\Http\Controllers\PostController::class, 'share'])->name('share');
 
+        Route::post('/posts/{post}/share', [\App\Http\Controllers\PostController::class, 'share'])->name('share');
     });
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\RoutePath;
@@ -31,10 +32,35 @@ Route::get(RoutePath::for('password.reset', '/reset-password/{token}'), function
 ->middleware(['guest:'.config('fortify.guard')])
 ->name('password.reset');
 
+Route::get('/shared/posts/{post}', function(Illuminate\Http\Request $request, Post $post) {
+    return "Specially made just for you:) Post id: {$post->id}";
+})->name('shared.post')->middleware('signed');
+
 if (\Illuminate\Support\Facades\App::environment('local')) {
+
+    // Note! This is the route to be shared but with signature
+    Route::get('/shared/videos/{video}', function(Illuminate\Http\Request $request, $video) {
+
+        /* Note! This is explicit code if not using the 'signed' middleware
+        if (! $request->hasValidSignature())
+        {
+            abort(401);
+        }
+        */
+
+        return 'git gud';
+    })->name('share-video')->middleware('signed');
+
     Route::get('/playground', function () { 
 
+        // Signed Route
+        $url = URL::temporarySignedRoute('share-video', now()->addSeconds(30), [
+            'video' => 134
+        ]);
+        return $url;
+
         // Internationalization Sample Start
+        /*
         //Lang::setLocale('es'); // Note! This is only affects locally and not the App level
         App::setLocale('en');  // Note! This affects the App level
 
@@ -61,9 +87,8 @@ if (\Illuminate\Support\Facades\App::environment('local')) {
         $trans = __('auth.welcome', ['name' => 'sam']);
 
         dd($trans);
-
         // Internationalization Sample End
-
+        */
         /*
         $user = User::factory()->make();
 
