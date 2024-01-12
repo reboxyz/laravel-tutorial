@@ -1,6 +1,6 @@
 <?php
 
-use App\Events\PlaygroundEvent;
+use App\Events\ChatMessageEvent;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -52,10 +52,20 @@ if (\Illuminate\Support\Facades\App::environment('local')) {
         return 'git gud';
     })->name('share-video')->middleware('signed');
 
+    Route::get('/ws', function() {
+        return view('websocket');
+    });
+
+    Route::post('/chat-message', function (\Illuminate\Http\Request $request){
+        event(new ChatMessageEvent($request->message));
+        return null;
+    });
+
+
     Route::get('/playground', function () { 
 
         // Broadcast Event for Web Socket
-        event(new PlaygroundEvent());
+        event(new ChatMessageEvent('Testing 123'));
         return null;
 
 

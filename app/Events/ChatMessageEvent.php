@@ -10,16 +10,18 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PlaygroundEvent implements ShouldBroadcast  // Note! Make this event broadcastable
+class ChatMessageEvent implements ShouldBroadcast  // Note! Make this event broadcastable
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $message;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct(string $message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -31,14 +33,14 @@ class PlaygroundEvent implements ShouldBroadcast  // Note! Make this event broad
     {
         return [
             //new PrivateChannel('channel-name'),
-            new Channel('public.playground.channel.1'),
+            new Channel('public.chat.channel.1'),
         ];
     }
 
     // Note! This will setup the custom event name 
     public function broadcastAs()
     {
-        return 'playground-winnux-here';
+        return 'chat-message';
     }
 
     // Note! This will setup the data or payload to be broadcasted
@@ -46,7 +48,7 @@ class PlaygroundEvent implements ShouldBroadcast  // Note! Make this event broad
     public function broadcastWith()
     {
         return [
-            'heya' => 134
+            'message' => $this->message
         ];
     }
 }
