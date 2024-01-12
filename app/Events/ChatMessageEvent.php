@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,14 +15,16 @@ class ChatMessageEvent implements ShouldBroadcast  // Note! Make this event broa
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public string $message;
+    public User $user;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(string $message)
+    public function __construct(string $message, User $user)
     {
         $this->message = $message;
+        $this->user = $user;
     }
 
     /**
@@ -32,8 +35,9 @@ class ChatMessageEvent implements ShouldBroadcast  // Note! Make this event broa
     public function broadcastOn(): array
     {
         return [
-            //new PrivateChannel('channel-name'),
-            new Channel('public.chat.channel.1'),
+            //new Channel('public.chat.channel.1'),
+            //new PrivateChannel('private.chat.channel.1'),  // Note! Needs authorized user only
+            new PresenceChannel('presence.chat.1'),          // Presence channel
         ];
     }
 
@@ -48,7 +52,8 @@ class ChatMessageEvent implements ShouldBroadcast  // Note! Make this event broa
     public function broadcastWith()
     {
         return [
-            'message' => $this->message
+            'message' => $this->message,
+            'user'=> $this->user->only(['name', 'email']),
         ];
     }
 }

@@ -57,7 +57,7 @@ if (\Illuminate\Support\Facades\App::environment('local')) {
     });
 
     Route::post('/chat-message', function (\Illuminate\Http\Request $request){
-        event(new ChatMessageEvent($request->message));
+        event(new ChatMessageEvent($request->message, auth()->user()));
         return null;
     });
 
@@ -65,7 +65,7 @@ if (\Illuminate\Support\Facades\App::environment('local')) {
     Route::get('/playground', function () { 
 
         // Broadcast Event for Web Socket
-        event(new ChatMessageEvent('Testing 123'));
+        event(new ChatMessageEvent('Testing 123', User::query()->find(1)));
         return null;
 
 
