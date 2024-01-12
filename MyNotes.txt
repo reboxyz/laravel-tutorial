@@ -1,0 +1,132 @@
+Laravel API Server Full Course - Beginner to Intermediate
+
+https://app.diagrams.net/
+
+33, 50, 1:04, 1:18, 1:26, 1:40, 1:47, 2:05, 2:16, 2:20, 2:24, 2:37, 2:55, 3:05, 3:12, 3:25, 3:36, 3:42, 3:51, 3:58, 4:20, 4:30, 4:41, 4:47, 5:03, 5:07; 5:15, 5:28, 5:35, 5:43, 6:05, 6:19, 6:29, 6:39, 6:47, 6:58, 7:07, 7:20
+
+
+https://github.com/barryvdh/laravel-ide-helper  IDE Helper
+https://github.com/knuckleswtf/scribe      API Documentation 
+https://laravel.com/docs/10.x/fortify API Authentication 
+https://beyondco.de/docs/laravel-websockets/getting-started/introduction    Laravel Web Socket
+
+
+composer create-project laravel/laravel laravel_tutorial
+composer dump-autoload # tinker auto import
+
+php artisan make:middleware SayCheeseMiddleware
+php artisan make:provider GeolocationServiceProvider # ServiceProvider for DI
+Note! ServiceProvider should be registered in the config/app.php’s providers array which is the DI Container
+
+Note! FACADE in Laravel is to call statically ServiceProvider methods
+
+php artisan make:model Post --all --api
+php artisan make:model Comment --all --api
+php artisan make:model PostUser --pivot 
+
+Where: --all             Generate a migration, seeder, factory, policy, resource controller, and form request classes for the model
+Where:  --api             Indicates if the generated controller should be an API resource controller
+
+php artisan db:seed  # Run Database Seeder
+
+Note! Although  rarely used, explicit route binding can be defined in the RouteServiceProvider’boot method
+
+php artisan make:resource PostResource  # Resource for Post Model
+php artisan make:resource CommentResource
+php artisan make:resource UserResource   
+php artisan make:exception GeneralJsonException
+php artisan make:event UserCreated
+php artisan make:listener SendWelcomeEmail
+php artisan make:mail WelcomeMail # command to make email template
+php artisan vendor:publish # perform customization like mail logo, etc.
+php artisan make:request PostStoreRequest # custom Request
+php artisan make:rule IntegerArray # custom Rule
+
+
+Unit, Feature Testing
+php artisan make:test --unit PostRepositoryTest
+Note! The unit test should extends “Tests\TestCase” and not the one from PHPUnit. In addition, set the Test php file to use the Trait: use RefreshDatabase;
+Important Note! Method in the Test file should start with the prefix “test_”
+
+./vendor/bin/phpunit --filter=PostApiTest  #run php unit with the specific test
+
+In the phpunit.xml, define the following if separate sqlite should be used:
+
+        <env name="DB_CONNECTION" value="sqlite_testing"/> 
+        <env name="DB_DATABASE" value=":memory:"/> 
+
+In the config\database.php, define the “sqlite_testing” connection:
+	'sqlite_testing' => [
+            'driver' => 'sqlite',
+            'url' => env('DATABASE_URL'),
+            'database' => env('DB_DATABASE', database_path('database_testing.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+        ],
+
+
+./vendor/bin/phpunit  # run unit test
+
+Note! To map an Event to a Listener, define it in the EventServiceProvider ‘$listen’  property. However, for better maintainability, Subscriber can be used instead. In the EventServiceProvider, use the ‘$subscribe
+‘ Property.
+
+composer run-script playground # custom command for composer called ‘playground’
+
+composer require --dev barryvdh/laravel-ide-helper
+composer dump-autoload
+composer require --dev knuckleswtf/scribe
+php artisan vendor:publish --tag=scribe-config
+php artisan scribe:generate # http://127.0.0.1:8000/docs
+
+composer require laravel/fortify
+php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider"
+php artisan migrate
+
+For User’s email verification  custom email, we setup a callback in the AuthServiceProvider’s boot method.
+
+To modify login/custom logic in fortify, in the FortifyServiceProvider’ boot method, define and setup logic using Fortify::authenticateUsing method.
+
+Laravel Sanctum
+composer require laravel/sanctum
+php artisan vendor:publish  # then choose Laravel\Sanctum\SanctumServiceProvider
+php artisan migrate
+
+For Sanctum Cookie authentication, set the .env file to the ff:
+SESSION_DRIVER=cookie
+SESSION_LIFETIME=120
+SESSION_DOMAIN="127.0.0.1"
+SANCTUM_STATEFUL_DOMAINS="127.0.0.1:8000,app.example.com"
+
+I18n
+php artisan lang:publish
+
+Notification
+php artisan make:notification PostSharedNotification
+
+Web Sockets
+composer require beyondcode/laravel-websockets
+composer require beyondcode/laravel-websockets --with-all-dependencies
+php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"
+composer require pusher/pusher-php-server
+php artisan websocket:serve
+http://localhost:8000/laravel-websockets
+
+Laravel Echo
+npm install laravel-echo pusher-js
+npm install axios
+
+php artisan websocket:serve
+npm run dev
+php artisan serve
+
+
+ERD (Entity Relationship Diagram) Modeling
+users - User  Model 
+posts - Post Model
+post_user - Pivot (link) table between the many-to-many relationship between User and Post
+comments - Comment Model which represent one-to-many from User Model and also one-to-many from Post Model. In effect, comments can be a link/pivot table too.
+
+Post (Parent) has many Comment(s) (children). The child has the ‘foreign key’.
+User (Parent) has many Comment(s) (children)
+
+ 

@@ -37,7 +37,7 @@ class ChatMessageEvent implements ShouldBroadcast  // Note! Make this event broa
         return [
             //new Channel('public.chat.channel.1'),
             //new PrivateChannel('private.chat.channel.1'),  // Note! Needs authorized user only
-            new PresenceChannel('presence.chat.1'),          // Presence channel
+            new PresenceChannel('presence.chat.1'),          // Presence Channel
         ];
     }
 
